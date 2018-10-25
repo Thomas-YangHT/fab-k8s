@@ -1,0 +1,116 @@
+[192.168.31.24] Executing task 'master'
+[192.168.31.24] run: export PATH=$PATH:/opt/bin
+[192.168.31.24] run: sudo kubeadm reset -f 
+[192.168.31.24] out: [preflight] running pre-flight checks
+[192.168.31.24] out: [reset] stopping the kubelet service
+[192.168.31.24] out: [reset] unmounting mounted directories in "/var/lib/kubelet"
+[192.168.31.24] out: [reset] deleting contents of stateful directories: [/var/lib/kubelet /etc/cni/net.d /var/lib/dockershim /var/run/kubernetes /var/lib/etcd]
+[192.168.31.24] out: [reset] deleting contents of config directories: [/etc/kubernetes/manifests /etc/kubernetes/pki]
+[192.168.31.24] out: [reset] deleting files: [/etc/kubernetes/admin.conf /etc/kubernetes/kubelet.conf /etc/kubernetes/bootstrap-kubelet.conf /etc/kubernetes/controller-manager.conf /etc/kubernetes/scheduler.conf]
+[192.168.31.24] out: 
+
+[192.168.31.24] run: sudo kubeadm init --kubernetes-version=v1.12.1 --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=0.0.0.0
+[192.168.31.24] out: [init] using Kubernetes version: v1.12.1
+[192.168.31.24] out: [preflight] running pre-flight checks
+[192.168.31.24] out: 	[WARNING Service-Docker]: docker service is not enabled, please run 'systemctl enable docker.service'
+[192.168.31.24] out: 	[WARNING Hostname]: hostname "coreb1" could not be reached
+[192.168.31.24] out: 	[WARNING Hostname]: hostname "coreb1" lookup coreb1 on 192.168.31.140:53: no such host
+[192.168.31.24] out: [preflight/images] Pulling images required for setting up a Kubernetes cluster
+[192.168.31.24] out: [preflight/images] This might take a minute or two, depending on the speed of your internet connection
+[192.168.31.24] out: [preflight/images] You can also perform this action in beforehand using 'kubeadm config images pull'
+[192.168.31.24] out: [kubelet] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[192.168.31.24] out: [kubelet] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[192.168.31.24] out: [preflight] Activating the kubelet service
+[192.168.31.24] out: [certificates] Generated etcd/ca certificate and key.
+[192.168.31.24] out: [certificates] Generated etcd/healthcheck-client certificate and key.
+[192.168.31.24] out: [certificates] Generated etcd/server certificate and key.
+[192.168.31.24] out: [certificates] etcd/server serving cert is signed for DNS names [coreb1 localhost] and IPs [127.0.0.1 ::1]
+[192.168.31.24] out: [certificates] Generated etcd/peer certificate and key.
+[192.168.31.24] out: [certificates] etcd/peer serving cert is signed for DNS names [coreb1 localhost] and IPs [192.168.31.24 127.0.0.1 ::1]
+[192.168.31.24] out: [certificates] Generated apiserver-etcd-client certificate and key.
+[192.168.31.24] out: [certificates] Generated ca certificate and key.
+[192.168.31.24] out: [certificates] Generated apiserver certificate and key.
+[192.168.31.24] out: [certificates] apiserver serving cert is signed for DNS names [coreb1 kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local] and IPs [10.96.0.1 192.168.31.24]
+[192.168.31.24] out: [certificates] Generated apiserver-kubelet-client certificate and key.
+[192.168.31.24] out: [certificates] Generated front-proxy-ca certificate and key.
+[192.168.31.24] out: [certificates] Generated front-proxy-client certificate and key.
+[192.168.31.24] out: [certificates] valid certificates and keys now exist in "/etc/kubernetes/pki"
+[192.168.31.24] out: [certificates] Generated sa key and public key.
+[192.168.31.24] out: [kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/admin.conf"
+[192.168.31.24] out: [kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/kubelet.conf"
+[192.168.31.24] out: [kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/controller-manager.conf"
+[192.168.31.24] out: [kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/scheduler.conf"
+[192.168.31.24] out: [controlplane] wrote Static Pod manifest for component kube-apiserver to "/etc/kubernetes/manifests/kube-apiserver.yaml"
+[192.168.31.24] out: [controlplane] wrote Static Pod manifest for component kube-controller-manager to "/etc/kubernetes/manifests/kube-controller-manager.yaml"
+[192.168.31.24] out: [controlplane] wrote Static Pod manifest for component kube-scheduler to "/etc/kubernetes/manifests/kube-scheduler.yaml"
+[192.168.31.24] out: [etcd] Wrote Static Pod manifest for a local etcd instance to "/etc/kubernetes/manifests/etcd.yaml"
+[192.168.31.24] out: [init] waiting for the kubelet to boot up the control plane as Static Pods from directory "/etc/kubernetes/manifests" 
+[192.168.31.24] out: [init] this might take a minute or longer if the control plane images have to be pulled
+[192.168.31.24] out: [apiclient] All control plane components are healthy after 116.502592 seconds
+[192.168.31.24] out: [uploadconfig] storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
+[192.168.31.24] out: [kubelet] Creating a ConfigMap "kubelet-config-1.12" in namespace kube-system with the configuration for the kubelets in the cluster
+[192.168.31.24] out: [markmaster] Marking the node coreb1 as master by adding the label "node-role.kubernetes.io/master=''"
+[192.168.31.24] out: [markmaster] Marking the node coreb1 as master by adding the taints [node-role.kubernetes.io/master:NoSchedule]
+[192.168.31.24] out: [patchnode] Uploading the CRI Socket information "/var/run/dockershim.sock" to the Node API object "coreb1" as an annotation
+[192.168.31.24] out: [bootstraptoken] using token: ud9r1s.hnr2t5siuv98uw5g
+[192.168.31.24] out: [bootstraptoken] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+[192.168.31.24] out: [bootstraptoken] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+[192.168.31.24] out: [bootstraptoken] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+[192.168.31.24] out: [bootstraptoken] creating the "cluster-info" ConfigMap in the "kube-public" namespace
+[192.168.31.24] out: [addons] Applied essential addon: CoreDNS
+[192.168.31.24] out: [addons] Applied essential addon: kube-proxy
+[192.168.31.24] out: 
+[192.168.31.24] out: Your Kubernetes master has initialized successfully!
+[192.168.31.24] out: 
+[192.168.31.24] out: To start using your cluster, you need to run the following as a regular user:
+[192.168.31.24] out: 
+[192.168.31.24] out:   mkdir -p $HOME/.kube
+[192.168.31.24] out:   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+[192.168.31.24] out:   sudo chown $(id -u):$(id -g) $HOME/.kube/config
+[192.168.31.24] out: 
+[192.168.31.24] out: You should now deploy a pod network to the cluster.
+[192.168.31.24] out: Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+[192.168.31.24] out:   https://kubernetes.io/docs/concepts/cluster-administration/addons/
+[192.168.31.24] out: 
+[192.168.31.24] out: You can now join any number of machines by running the following on each node
+[192.168.31.24] out: as root:
+[192.168.31.24] out: 
+[192.168.31.24] out:   kubeadm join 192.168.31.24:6443 --token ud9r1s.hnr2t5siuv98uw5g --discovery-token-ca-cert-hash sha256:6a5f6e534eab7e9545a38db78e1f1f207b81bef3495667bd49ee4a33a7078b41
+[192.168.31.24] out: 
+[192.168.31.24] out: 
+
+[192.168.31.24] run: mkdir -p $HOME/.kube
+[192.168.31.24] run: sudo cp  /etc/kubernetes/admin.conf $HOME/.kube/config
+[192.168.31.24] run: sudo chown $(id -u):$(id -g) $HOME/.kube/config
+[192.168.31.24] run: kubectl apply -f coreos-k8s/kube-flannel.yml
+[192.168.31.24] out: clusterrole.rbac.authorization.k8s.io/flannel created
+[192.168.31.24] out: clusterrolebinding.rbac.authorization.k8s.io/flannel created
+[192.168.31.24] out: serviceaccount/flannel created
+[192.168.31.24] out: configmap/kube-flannel-cfg created
+[192.168.31.24] out: daemonset.extensions/kube-flannel-ds-amd64 created
+[192.168.31.24] out: daemonset.extensions/kube-flannel-ds-arm64 created
+[192.168.31.24] out: daemonset.extensions/kube-flannel-ds-arm created
+[192.168.31.24] out: daemonset.extensions/kube-flannel-ds-ppc64le created
+[192.168.31.24] out: daemonset.extensions/kube-flannel-ds-s390x created
+[192.168.31.24] out: 
+
+[192.168.31.24] run: kubectl apply -f coreos-k8s/kubernetes-dashboard.yaml
+[192.168.31.24] out: secret/kubernetes-dashboard-certs created
+[192.168.31.24] out: serviceaccount/kubernetes-dashboard created
+[192.168.31.24] out: role.rbac.authorization.k8s.io/kubernetes-dashboard-minimal created
+[192.168.31.24] out: rolebinding.rbac.authorization.k8s.io/kubernetes-dashboard-minimal created
+[192.168.31.24] out: deployment.apps/kubernetes-dashboard created
+[192.168.31.24] out: service/kubernetes-dashboard created
+[192.168.31.24] out: 
+
+[192.168.31.24] run: kubectl apply -f coreos-k8s/dashboard-adminuser.yaml
+[192.168.31.24] out: serviceaccount/admin-user created
+[192.168.31.24] out: 
+
+[192.168.31.24] run: kubectl apply -f coreos-k8s/dashboard-rolebonding.yaml
+[192.168.31.24] out: clusterrolebinding.rbac.authorization.k8s.io/admin-user created
+[192.168.31.24] out: 
+
+
+Done.
+Disconnecting from 192.168.31.24... done.
