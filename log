@@ -21,19 +21,19 @@
 [192.168.31.24] out: [kubelet] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
 [192.168.31.24] out: [kubelet] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
 [192.168.31.24] out: [preflight] Activating the kubelet service
+[192.168.31.24] out: [certificates] Generated front-proxy-ca certificate and key.
+[192.168.31.24] out: [certificates] Generated front-proxy-client certificate and key.
 [192.168.31.24] out: [certificates] Generated etcd/ca certificate and key.
-[192.168.31.24] out: [certificates] Generated etcd/healthcheck-client certificate and key.
 [192.168.31.24] out: [certificates] Generated etcd/server certificate and key.
 [192.168.31.24] out: [certificates] etcd/server serving cert is signed for DNS names [coreb1 localhost] and IPs [127.0.0.1 ::1]
 [192.168.31.24] out: [certificates] Generated etcd/peer certificate and key.
 [192.168.31.24] out: [certificates] etcd/peer serving cert is signed for DNS names [coreb1 localhost] and IPs [192.168.31.24 127.0.0.1 ::1]
+[192.168.31.24] out: [certificates] Generated etcd/healthcheck-client certificate and key.
 [192.168.31.24] out: [certificates] Generated apiserver-etcd-client certificate and key.
 [192.168.31.24] out: [certificates] Generated ca certificate and key.
 [192.168.31.24] out: [certificates] Generated apiserver certificate and key.
 [192.168.31.24] out: [certificates] apiserver serving cert is signed for DNS names [coreb1 kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local] and IPs [10.96.0.1 192.168.31.24]
 [192.168.31.24] out: [certificates] Generated apiserver-kubelet-client certificate and key.
-[192.168.31.24] out: [certificates] Generated front-proxy-ca certificate and key.
-[192.168.31.24] out: [certificates] Generated front-proxy-client certificate and key.
 [192.168.31.24] out: [certificates] valid certificates and keys now exist in "/etc/kubernetes/pki"
 [192.168.31.24] out: [certificates] Generated sa key and public key.
 [192.168.31.24] out: [kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/admin.conf"
@@ -46,13 +46,13 @@
 [192.168.31.24] out: [etcd] Wrote Static Pod manifest for a local etcd instance to "/etc/kubernetes/manifests/etcd.yaml"
 [192.168.31.24] out: [init] waiting for the kubelet to boot up the control plane as Static Pods from directory "/etc/kubernetes/manifests" 
 [192.168.31.24] out: [init] this might take a minute or longer if the control plane images have to be pulled
-[192.168.31.24] out: [apiclient] All control plane components are healthy after 116.502592 seconds
+[192.168.31.24] out: [apiclient] All control plane components are healthy after 76.003843 seconds
 [192.168.31.24] out: [uploadconfig] storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
 [192.168.31.24] out: [kubelet] Creating a ConfigMap "kubelet-config-1.12" in namespace kube-system with the configuration for the kubelets in the cluster
 [192.168.31.24] out: [markmaster] Marking the node coreb1 as master by adding the label "node-role.kubernetes.io/master=''"
 [192.168.31.24] out: [markmaster] Marking the node coreb1 as master by adding the taints [node-role.kubernetes.io/master:NoSchedule]
 [192.168.31.24] out: [patchnode] Uploading the CRI Socket information "/var/run/dockershim.sock" to the Node API object "coreb1" as an annotation
-[192.168.31.24] out: [bootstraptoken] using token: ud9r1s.hnr2t5siuv98uw5g
+[192.168.31.24] out: [bootstraptoken] using token: 2qcili.wlqgubqofhk2e5a2
 [192.168.31.24] out: [bootstraptoken] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
 [192.168.31.24] out: [bootstraptoken] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
 [192.168.31.24] out: [bootstraptoken] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
@@ -75,26 +75,36 @@
 [192.168.31.24] out: You can now join any number of machines by running the following on each node
 [192.168.31.24] out: as root:
 [192.168.31.24] out: 
-[192.168.31.24] out:   kubeadm join 192.168.31.24:6443 --token ud9r1s.hnr2t5siuv98uw5g --discovery-token-ca-cert-hash sha256:6a5f6e534eab7e9545a38db78e1f1f207b81bef3495667bd49ee4a33a7078b41
+[192.168.31.24] out:   kubeadm join 192.168.31.24:6443 --token 2qcili.wlqgubqofhk2e5a2 --discovery-token-ca-cert-hash sha256:b08b3e051de4248fd2485b39c61c8e85fe4eb683dcf9883edfb26c7f53b05bb0
 [192.168.31.24] out: 
 [192.168.31.24] out: 
 
 [192.168.31.24] run: mkdir -p $HOME/.kube
 [192.168.31.24] run: sudo cp  /etc/kubernetes/admin.conf $HOME/.kube/config
 [192.168.31.24] run: sudo chown $(id -u):$(id -g) $HOME/.kube/config
-[192.168.31.24] run: kubectl apply -f coreos-k8s/kube-flannel.yml
-[192.168.31.24] out: clusterrole.rbac.authorization.k8s.io/flannel created
-[192.168.31.24] out: clusterrolebinding.rbac.authorization.k8s.io/flannel created
-[192.168.31.24] out: serviceaccount/flannel created
-[192.168.31.24] out: configmap/kube-flannel-cfg created
-[192.168.31.24] out: daemonset.extensions/kube-flannel-ds-amd64 created
-[192.168.31.24] out: daemonset.extensions/kube-flannel-ds-arm64 created
-[192.168.31.24] out: daemonset.extensions/kube-flannel-ds-arm created
-[192.168.31.24] out: daemonset.extensions/kube-flannel-ds-ppc64le created
-[192.168.31.24] out: daemonset.extensions/kube-flannel-ds-s390x created
+[192.168.31.24] run: kubectl apply -f  coreos-k8s/etcd.yaml
+[192.168.31.24] out: daemonset.extensions/calico-etcd created
+[192.168.31.24] out: service/calico-etcd created
 [192.168.31.24] out: 
 
-[192.168.31.24] run: kubectl apply -f coreos-k8s/kubernetes-dashboard.yaml
+[192.168.31.24] run: kubectl apply -f  coreos-k8s/rbac.yaml
+[192.168.31.24] out: clusterrole.rbac.authorization.k8s.io/calico-kube-controllers created
+[192.168.31.24] out: clusterrolebinding.rbac.authorization.k8s.io/calico-kube-controllers created
+[192.168.31.24] out: clusterrole.rbac.authorization.k8s.io/calico-node created
+[192.168.31.24] out: clusterrolebinding.rbac.authorization.k8s.io/calico-node created
+[192.168.31.24] out: 
+
+[192.168.31.24] run: kubectl apply -f  coreos-k8s/calico.yaml
+[192.168.31.24] out: configmap/calico-config created
+[192.168.31.24] out: secret/calico-etcd-secrets created
+[192.168.31.24] out: daemonset.extensions/calico-node created
+[192.168.31.24] out: serviceaccount/calico-node created
+[192.168.31.24] out: deployment.extensions/calico-kube-controllers created
+[192.168.31.24] out: serviceaccount/calico-kube-controllers created
+[192.168.31.24] out: 
+
+[192.168.31.24] run: sed -i "/^\  ports:/i \  type: NodePort"  coreos-k8s/kubernetes-dashboard.yaml
+[192.168.31.24] run: kubectl apply -f  coreos-k8s/kubernetes-dashboard.yaml
 [192.168.31.24] out: secret/kubernetes-dashboard-certs created
 [192.168.31.24] out: serviceaccount/kubernetes-dashboard created
 [192.168.31.24] out: role.rbac.authorization.k8s.io/kubernetes-dashboard-minimal created
@@ -103,12 +113,36 @@
 [192.168.31.24] out: service/kubernetes-dashboard created
 [192.168.31.24] out: 
 
-[192.168.31.24] run: kubectl apply -f coreos-k8s/dashboard-adminuser.yaml
+[192.168.31.24] run: kubectl apply -f  coreos-k8s/dashboard-adminuser.yaml
 [192.168.31.24] out: serviceaccount/admin-user created
 [192.168.31.24] out: 
 
-[192.168.31.24] run: kubectl apply -f coreos-k8s/dashboard-rolebonding.yaml
+[192.168.31.24] run: kubectl apply -f  coreos-k8s/dashboard-rolebonding.yaml
 [192.168.31.24] out: clusterrolebinding.rbac.authorization.k8s.io/admin-user created
+[192.168.31.24] out: 
+
+[192.168.31.24] run: kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+[192.168.31.24] out: Name:         admin-user-token-dt8gt
+[192.168.31.24] out: Namespace:    kube-system
+[192.168.31.24] out: Labels:       <none>
+[192.168.31.24] out: Annotations:  kubernetes.io/service-account.name: admin-user
+[192.168.31.24] out:               kubernetes.io/service-account.uid: b1e33b37-d834-11e8-aaa9-525400d0af9e
+[192.168.31.24] out: 
+[192.168.31.24] out: Type:  kubernetes.io/service-account-token
+[192.168.31.24] out: 
+[192.168.31.24] out: Data
+[192.168.31.24] out: ====
+[192.168.31.24] out: ca.crt:     1025 bytes
+[192.168.31.24] out: namespace:  11 bytes
+[192.168.31.24] out: token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLWR0OGd0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJiMWUzM2IzNy1kODM0LTExZTgtYWFhOS01MjU0MDBkMGFmOWUiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.KSFMJsw3Bk2mGfjGDqnpp94-FhY3OieOAFX_bz80gfSYVwH-HvKYHvjmw7M1HbU7CSpIwd-nCmCdzVcEAPzHqwyn8_TWtNtzqUswiWnnZ_Rx-6VSm7ikykSj0GXN2jyl1IDEtwFgU5wrPFSVS_v85azmPKY7_RpTHMzXP4RzBGbxg-hfYro9M6vgNPlaYAjpdxQnKIwodqN2ni6uMJPMYPMIImeoDppRdqirVKwolhgweHi_QNkjXJ1LhiiIndabHeTdUDXid38O0DNy6D54osECvTDu0JVbNIyt-b9wqMkMRmu6f0Xg64FbU4vYpf7TxaQKG8EYyoaDyM-cxl5qVg
+[192.168.31.24] out: 
+
+[192.168.31.24] run: kubectl get svc --all-namespaces
+[192.168.31.24] out: NAMESPACE     NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)         AGE
+[192.168.31.24] out: default       kubernetes             ClusterIP   10.96.0.1        <none>        443/TCP         45s
+[192.168.31.24] out: kube-system   calico-etcd            ClusterIP   10.96.232.136    <none>        6666/TCP        7s
+[192.168.31.24] out: kube-system   kube-dns               ClusterIP   10.96.0.10       <none>        53/UDP,53/TCP   13s
+[192.168.31.24] out: kube-system   kubernetes-dashboard   NodePort    10.103.140.222   <none>        443:30129/TCP   1s
 [192.168.31.24] out: 
 
 
