@@ -1,7 +1,11 @@
-#node can multi IP, use ',' to seprate
+#CONFIG file for k8s1.12.1 
 master="192.168.31.24"
-node="192.168.31.25"
-#
-#if install helm & ingress addon
+node="192.168.31.25" #node can multi IP, use ',' to seprate
+net="calico" #calico or flannel
+
+#set if install addon plugin:
+dashboard=true
 helm=true
 ingress=true
+prometheus=true
+efk=true

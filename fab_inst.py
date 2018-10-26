@@ -5,7 +5,7 @@ def test():
         run("ls")
 
 def prepare():
-    remote_dir_tar='/home/core/coreos-k8s.tgz'
+   # remote_dir_tar='/home/core/coreos-k8s.tgz'
     put('coreos-k8s.tgz', '')
     run('tar zxvf coreos-k8s.tgz')
     run('ls coreos-k8s')
@@ -28,16 +28,21 @@ def master():
     run('mkdir -p $HOME/.kube')
     run('sudo cp  /etc/kubernetes/admin.conf $HOME/.kube/config')
     run('sudo chown $(id -u):$(id -g) $HOME/.kube/config')
-   # run('kubectl apply -f coreos-k8s/kube-flannel.yml')
-   ###calico
+
+def flannel():
+    run('kubectl apply -f coreos-k8s/kube-flannel.yml')
+
+def calico():
     run('kubectl apply -f  coreos-k8s/etcd.yaml')
     run('kubectl apply -f  coreos-k8s/rbac.yaml')
     run('kubectl apply -f  coreos-k8s/calico.yaml')
-   ###calico
+
+def dashboard():
     run('sed -i "/^\  ports:/i \  type: NodePort"  coreos-k8s/kubernetes-dashboard.yaml')
     run('kubectl apply -f  coreos-k8s/kubernetes-dashboard.yaml')
     run('kubectl apply -f  coreos-k8s/dashboard-adminuser.yaml')
     run('kubectl apply -f  coreos-k8s/dashboard-rolebonding.yaml')
+    run('kubectl taint nodes --all node-role.kubernetes.io/master- ;ls')
     run('kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk \'{print $1}\')')
     run('kubectl get svc --all-namespaces')
 
@@ -48,19 +53,30 @@ def node():
     run('sudo modprobe ip_vs')
     run('./join.sh')
 
+def addon():
+    put('k8s-addon.tgz', '')
+    run('tar zxvf k8s-addon.tgz')
+    run('ls k8s-addon/*tar |awk \'{print "docker load <"$1}\'|sh')
+    
 def ingress():
-    run('tar zxvf coreos-k8s/ingress-nginx.tgz -C coreos-k8s/')
-    run('sed -i "/- --anno/a \            - --enable-ssl-passthrough" coreos-k8s/ingress-nginx/deploy/mandatory.yaml ')
-    run('kubectl apply -f  coreos-k8s/ingress-nginx/deploy/mandatory.yaml')
-    run('kubectl apply -f  coreos-k8s/ingress-nginx/deploy/provider/baremetal/service-nodeport.yaml')
-    run('kubectl apply -f  coreos-k8s/ingress-dashboard.yml')
+    run('tar zxvf k8s-addon/ingress-nginx.tgz -C k8s-addon/')
+    run('sed -i "/- --anno/a \            - --enable-ssl-passthrough" k8s-addon/ingress-nginx/deploy/mandatory.yaml ')
+    run('kubectl apply -f  k8s-addon/ingress-nginx/deploy/mandatory.yaml')
+    run('kubectl apply -f  k8s-addon/ingress-nginx/deploy/provider/baremetal/service-nodeport.yaml')
+    run('kubectl apply -f  k8s-addon/ingress-dashboard.yml')
     run('kubectl get ingress --all-namespaces')
 
 def helm():
-    run('tar zxvf coreos-k8s/helm-v2.11.0-linux-amd64.tar.gz -C coreos-k8s/')
-    run('sudo cp coreos-k8s/linux-amd64/helm /opt/bin/helm')
+    run('tar zxvf k8s-addon/helm-v2.11.0-linux-amd64.tar.gz -C k8s-addon/')
+    run('sudo cp k8s-addon/linux-amd64/helm /opt/bin/helm')
     run('helm init --upgrade -i registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.11.0 --stable-repo-url https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts')
     run('kubectl create serviceaccount --namespace kube-system tiller')
     run('kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller')
     run('kubectl patch deploy --namespace kube-system tiller-deploy -p \'{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}\'')
     run('kubectl get pods --all-namespaces')
+
+def prometheus():
+    run('kubectl apply -f  k8s-addon/prometheus/')
+
+def efk():
+    run('kubectl apply -f  k8s-addon/efk/')
