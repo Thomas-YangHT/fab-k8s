@@ -25,9 +25,9 @@ fab -H $master,$node -f fab_inst.py prepare -u core -P --colorize-errors
 fab -H $master -f fab_inst.py master -u core --colorize-errors |tee log
 
 #network
-[ $net = "calico" ] && echo "install calico" && \ 
+[ $net = "calico" ] && echo "install calico" && \
 fab -H $master -f fab_inst.py calico -u core --colorize-errors 
-[ $net = "flannel" ] && echo "install flannel" && \ 
+[ $net = "flannel" ] && echo "install flannel" && \
 fab -H $master -f fab_inst.py flannel -u core --colorize-errors 
 
 #find join command
