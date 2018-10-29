@@ -21,6 +21,10 @@ source ./CONFIG
 #prepare
 fab -H $master,$node -f fab_inst.py prepare -u core -P --colorize-errors
 
+#addon prepare
+( [ $ingress = true ] || [ $helm = true ] || [ $prometheus = true ] || [ $efk = true ] ) && \
+fab -H $master,$node -f fab_inst.py addon -u core -P --colorize-errors 
+
 #master
 fab -H $master -f fab_inst.py master -u core --colorize-errors |tee log
 
@@ -38,7 +42,7 @@ fab -H $node -f fab_inst.py node -u core -P --colorize-errors
 
 #dashboard
 [ $dashboard = true ] && echo "install dashboard" && \
-fab -H $master -f fab_inst.py dashboard -u core --colorize-errors |tee -a log
+fab -H $master -f fab_inst.py dashboard -u core --colorize-errors|tee -a log 
 
 #cost seconds
 D2=`date +%s`
@@ -46,9 +50,6 @@ echo Install k8s base-structure finished in $((D2-D1)) seconds
 #stage base finish.
 #
 echo "Start addon install..."
-#addon prepare
-( [ $ingress = true ] || [ $helm = true ] || [ $prometheus = true ] || [ $efk = true ] ) && \
-fab -H $master,$node -f fab_inst.py addon -u core -P --colorize-errors 
 
 #ingress
 [ $ingress = true ] && echo "install ingress" && \
@@ -65,6 +66,9 @@ fab -H $master -f fab_inst.py prometheus -u core --colorize-errors
 #efk
 [ $efk = true ] && echo "install efk" && \
 fab -H $master -f fab_inst.py efk -u core --colorize-errors
+
+#finish 
+fab -H $master -f fab_inst.py finish -u core --colorize-errors |tee -a log
 
 #cost seconds
 D2=`date +%s`

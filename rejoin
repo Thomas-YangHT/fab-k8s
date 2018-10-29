@@ -1,0 +1,10 @@
+[192.168.31.24] Executing task 'rejoin'
+[192.168.31.24] run: kubeadm token create --print-join-command
+[192.168.31.24] out: I1029 05:45:38.431857   18701 version.go:89] could not fetch a Kubernetes version from the internet: unable to get URL "https://dl.k8s.io/release/stable-1.txt": Get https://dl.k8s.io/release/stable-1.txt: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+[192.168.31.24] out: I1029 05:45:38.432034   18701 version.go:94] falling back to the local client version: v1.12.1
+[192.168.31.24] out: kubeadm join 192.168.31.24:6443 --token lph61t.qhzmns8ypq91cr2c --discovery-token-ca-cert-hash sha256:147ed5414e942637b696226ead292c5608d813744ae9755319ae53cf6e29ad73
+[192.168.31.24] out: 
+
+
+Done.
+Disconnecting from 192.168.31.24... done.

@@ -1,14 +1,5 @@
 [192.168.31.24] Executing task 'master'
 [192.168.31.24] run: export PATH=$PATH:/opt/bin
-[192.168.31.24] run: sudo kubeadm reset -f 
-[192.168.31.24] out: [preflight] running pre-flight checks
-[192.168.31.24] out: [reset] stopping the kubelet service
-[192.168.31.24] out: [reset] unmounting mounted directories in "/var/lib/kubelet"
-[192.168.31.24] out: [reset] deleting contents of stateful directories: [/var/lib/kubelet /etc/cni/net.d /var/lib/dockershim /var/run/kubernetes /var/lib/etcd]
-[192.168.31.24] out: [reset] deleting contents of config directories: [/etc/kubernetes/manifests /etc/kubernetes/pki]
-[192.168.31.24] out: [reset] deleting files: [/etc/kubernetes/admin.conf /etc/kubernetes/kubelet.conf /etc/kubernetes/bootstrap-kubelet.conf /etc/kubernetes/controller-manager.conf /etc/kubernetes/scheduler.conf]
-[192.168.31.24] out: 
-
 [192.168.31.24] run: sudo kubeadm init --kubernetes-version=v1.12.1 --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=0.0.0.0
 [192.168.31.24] out: [init] using Kubernetes version: v1.12.1
 [192.168.31.24] out: [preflight] running pre-flight checks
@@ -46,13 +37,13 @@
 [192.168.31.24] out: [etcd] Wrote Static Pod manifest for a local etcd instance to "/etc/kubernetes/manifests/etcd.yaml"
 [192.168.31.24] out: [init] waiting for the kubelet to boot up the control plane as Static Pods from directory "/etc/kubernetes/manifests" 
 [192.168.31.24] out: [init] this might take a minute or longer if the control plane images have to be pulled
-[192.168.31.24] out: [apiclient] All control plane components are healthy after 76.003843 seconds
+[192.168.31.24] out: [apiclient] All control plane components are healthy after 66.506060 seconds
 [192.168.31.24] out: [uploadconfig] storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
 [192.168.31.24] out: [kubelet] Creating a ConfigMap "kubelet-config-1.12" in namespace kube-system with the configuration for the kubelets in the cluster
 [192.168.31.24] out: [markmaster] Marking the node coreb1 as master by adding the label "node-role.kubernetes.io/master=''"
 [192.168.31.24] out: [markmaster] Marking the node coreb1 as master by adding the taints [node-role.kubernetes.io/master:NoSchedule]
 [192.168.31.24] out: [patchnode] Uploading the CRI Socket information "/var/run/dockershim.sock" to the Node API object "coreb1" as an annotation
-[192.168.31.24] out: [bootstraptoken] using token: 2qcili.wlqgubqofhk2e5a2
+[192.168.31.24] out: [bootstraptoken] using token: rwvoub.r4slfm0ls749iykx
 [192.168.31.24] out: [bootstraptoken] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
 [192.168.31.24] out: [bootstraptoken] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
 [192.168.31.24] out: [bootstraptoken] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
@@ -75,34 +66,17 @@
 [192.168.31.24] out: You can now join any number of machines by running the following on each node
 [192.168.31.24] out: as root:
 [192.168.31.24] out: 
-[192.168.31.24] out:   kubeadm join 192.168.31.24:6443 --token 2qcili.wlqgubqofhk2e5a2 --discovery-token-ca-cert-hash sha256:b08b3e051de4248fd2485b39c61c8e85fe4eb683dcf9883edfb26c7f53b05bb0
+[192.168.31.24] out:   kubeadm join 192.168.31.24:6443 --token rwvoub.r4slfm0ls749iykx --discovery-token-ca-cert-hash sha256:e951b64cd1484d16e298fdb07351dfd04396da109b6a44725b8a2da22cd2dfd4
 [192.168.31.24] out: 
 [192.168.31.24] out: 
 
 [192.168.31.24] run: mkdir -p $HOME/.kube
 [192.168.31.24] run: sudo cp  /etc/kubernetes/admin.conf $HOME/.kube/config
 [192.168.31.24] run: sudo chown $(id -u):$(id -g) $HOME/.kube/config
-[192.168.31.24] run: kubectl apply -f  coreos-k8s/etcd.yaml
-[192.168.31.24] out: daemonset.extensions/calico-etcd created
-[192.168.31.24] out: service/calico-etcd created
-[192.168.31.24] out: 
 
-[192.168.31.24] run: kubectl apply -f  coreos-k8s/rbac.yaml
-[192.168.31.24] out: clusterrole.rbac.authorization.k8s.io/calico-kube-controllers created
-[192.168.31.24] out: clusterrolebinding.rbac.authorization.k8s.io/calico-kube-controllers created
-[192.168.31.24] out: clusterrole.rbac.authorization.k8s.io/calico-node created
-[192.168.31.24] out: clusterrolebinding.rbac.authorization.k8s.io/calico-node created
-[192.168.31.24] out: 
-
-[192.168.31.24] run: kubectl apply -f  coreos-k8s/calico.yaml
-[192.168.31.24] out: configmap/calico-config created
-[192.168.31.24] out: secret/calico-etcd-secrets created
-[192.168.31.24] out: daemonset.extensions/calico-node created
-[192.168.31.24] out: serviceaccount/calico-node created
-[192.168.31.24] out: deployment.extensions/calico-kube-controllers created
-[192.168.31.24] out: serviceaccount/calico-kube-controllers created
-[192.168.31.24] out: 
-
+Done.
+Disconnecting from 192.168.31.24... done.
+[192.168.31.24] Executing task 'dashboard'
 [192.168.31.24] run: sed -i "/^\  ports:/i \  type: NodePort"  coreos-k8s/kubernetes-dashboard.yaml
 [192.168.31.24] run: kubectl apply -f  coreos-k8s/kubernetes-dashboard.yaml
 [192.168.31.24] out: secret/kubernetes-dashboard-certs created
@@ -121,12 +95,71 @@
 [192.168.31.24] out: clusterrolebinding.rbac.authorization.k8s.io/admin-user created
 [192.168.31.24] out: 
 
+[192.168.31.24] run: kubectl taint nodes --all node-role.kubernetes.io/master- ;ls
+[192.168.31.24] out: node/coreb1 untainted
+[192.168.31.24] out: error: taint "node-role.kubernetes.io/master:" not found
+[192.168.31.24] out: coreos-k8s	fluent-es-2.2.1.tar   fluent-es2.0.2.tar  k8s-addon
+[192.168.31.24] out: coreos-k8s.tgz	fluent-es-v2.2.1.tar  fluent-es2.1.0.tar  k8s-addon.tgz
+[192.168.31.24] out: 
+
+
+Done.
+Disconnecting from 192.168.31.24... done.
+[192.168.31.24] Executing task 'finish'
+[192.168.31.24] run: kubectl get svc --all-namespaces
+[192.168.31.24] out: NAMESPACE     NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)         AGE
+[192.168.31.24] out: default       kubernetes             ClusterIP   10.96.0.1       <none>        443/TCP         102s
+[192.168.31.24] out: kube-system   calico-etcd            ClusterIP   10.96.232.136   <none>        6666/TCP        68s
+[192.168.31.24] out: kube-system   kube-dns               ClusterIP   10.96.0.10      <none>        53/UDP,53/TCP   84s
+[192.168.31.24] out: kube-system   kubernetes-dashboard   NodePort    10.110.30.173   <none>        443:31231/TCP   17s
+[192.168.31.24] out: 
+
 [192.168.31.24] run: kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
-[192.168.31.24] out: Name:         admin-user-token-dt8gt
+[192.168.31.24] out: Name:         admin-user-token-x2q6m
 [192.168.31.24] out: Namespace:    kube-system
 [192.168.31.24] out: Labels:       <none>
 [192.168.31.24] out: Annotations:  kubernetes.io/service-account.name: admin-user
-[192.168.31.24] out:               kubernetes.io/service-account.uid: b1e33b37-d834-11e8-aaa9-525400d0af9e
+[192.168.31.24] out:               kubernetes.io/service-account.uid: e20d35ab-db3e-11e8-86c5-525400d0af9e
+[192.168.31.24] out: 
+[192.168.31.24] out: Type:  kubernetes.io/service-account-token
+[192.168.31.24] out: 
+[192.168.31.24] out: Data
+[192.168.31.24] out: ====
+[192.168.31.24] out: namespace:  11 bytes
+[192.168.31.24] out: token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXgycTZtIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJlMjBkMzVhYi1kYjNlLTExZTgtODZjNS01MjU0MDBkMGFmOWUiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.Ef1Y_gvrrd-1QV_ybX8q33XudAcE10PYt3ZDq1UDJFQ5FFX2qyD3bPNnApz32BWXZW7-q9AcBTEn-WVVoOcKZqZY_D8-REnxCHJE52Y6CtC8DqE_Tzq_uYs9SC6pLRA28LnMYX8f-FW9QFDDXyAstkMxhFnQqdNsMbiDU4TeVqN-cA6c9X2jt1C3Gzc2iOrICgAr4E05IeuMQoybxOuaC03M7aCBEM34Fr1bBRaNgA_vS4K1ESiGGW1iXp41f7UNN2WERz8DRTnBWfsuQMP3tw-W37SQudunVQZKwkOyqRGc6k0vkdWGGwL9tHbhs2lA0s13C8MSllnU-SvVVkum9g
+[192.168.31.24] out: ca.crt:     1025 bytes
+[192.168.31.24] out: 
+
+
+Done.
+Disconnecting from 192.168.31.24... done.
+[192.168.31.24] Executing task 'finish'
+[192.168.31.24] run: kubectl get svc --all-namespaces
+[192.168.31.24] out: NAMESPACE       NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+[192.168.31.24] out: default         kubernetes              ClusterIP   10.96.0.1        <none>        443/TCP                      5m18s
+[192.168.31.24] out: ingress-nginx   ingress-nginx           NodePort    10.106.217.213   <none>        80:31509/TCP,443:31647/TCP   2m2s
+[192.168.31.24] out: kube-system     calico-etcd             ClusterIP   10.96.232.136    <none>        6666/TCP                     4m44s
+[192.168.31.24] out: kube-system     elasticsearch-logging   ClusterIP   10.96.31.87      <none>        9200/TCP                     20s
+[192.168.31.24] out: kube-system     kibana-logging          ClusterIP   10.98.228.167    <none>        5601/TCP                     7s
+[192.168.31.24] out: kube-system     kube-dns                ClusterIP   10.96.0.10       <none>        53/UDP,53/TCP                5m
+[192.168.31.24] out: kube-system     kubernetes-dashboard    NodePort    10.110.30.173    <none>        443:31231/TCP                3m53s
+[192.168.31.24] out: kube-system     tiller-deploy           ClusterIP   10.99.103.114    <none>        44134/TCP                    2m28s
+[192.168.31.24] out: monitoring      alertmanager-main       ClusterIP   10.104.92.22     <none>        9093/TCP                     93s
+[192.168.31.24] out: monitoring      alertmanager-operated   ClusterIP   None             <none>        9093/TCP,6783/TCP            93s
+[192.168.31.24] out: monitoring      grafana                 ClusterIP   10.108.227.205   <none>        3000/TCP                     86s
+[192.168.31.24] out: monitoring      kube-state-metrics      ClusterIP   None             <none>        8443/TCP,9443/TCP            79s
+[192.168.31.24] out: monitoring      node-exporter           ClusterIP   None             <none>        9100/TCP                     72s
+[192.168.31.24] out: monitoring      prometheus-k8s          ClusterIP   10.110.209.127   <none>        9090/TCP                     35s
+[192.168.31.24] out: monitoring      prometheus-operated     ClusterIP   None             <none>        9090/TCP                     51s
+[192.168.31.24] out: monitoring      prometheus-operator     ClusterIP   None             <none>        8080/TCP                     111s
+[192.168.31.24] out: 
+
+[192.168.31.24] run: kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+[192.168.31.24] out: Name:         admin-user-token-x2q6m
+[192.168.31.24] out: Namespace:    kube-system
+[192.168.31.24] out: Labels:       <none>
+[192.168.31.24] out: Annotations:  kubernetes.io/service-account.name: admin-user
+[192.168.31.24] out:               kubernetes.io/service-account.uid: e20d35ab-db3e-11e8-86c5-525400d0af9e
 [192.168.31.24] out: 
 [192.168.31.24] out: Type:  kubernetes.io/service-account-token
 [192.168.31.24] out: 
@@ -134,15 +167,48 @@
 [192.168.31.24] out: ====
 [192.168.31.24] out: ca.crt:     1025 bytes
 [192.168.31.24] out: namespace:  11 bytes
-[192.168.31.24] out: token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLWR0OGd0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJiMWUzM2IzNy1kODM0LTExZTgtYWFhOS01MjU0MDBkMGFmOWUiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.KSFMJsw3Bk2mGfjGDqnpp94-FhY3OieOAFX_bz80gfSYVwH-HvKYHvjmw7M1HbU7CSpIwd-nCmCdzVcEAPzHqwyn8_TWtNtzqUswiWnnZ_Rx-6VSm7ikykSj0GXN2jyl1IDEtwFgU5wrPFSVS_v85azmPKY7_RpTHMzXP4RzBGbxg-hfYro9M6vgNPlaYAjpdxQnKIwodqN2ni6uMJPMYPMIImeoDppRdqirVKwolhgweHi_QNkjXJ1LhiiIndabHeTdUDXid38O0DNy6D54osECvTDu0JVbNIyt-b9wqMkMRmu6f0Xg64FbU4vYpf7TxaQKG8EYyoaDyM-cxl5qVg
+[192.168.31.24] out: token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXgycTZtIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJlMjBkMzVhYi1kYjNlLTExZTgtODZjNS01MjU0MDBkMGFmOWUiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.Ef1Y_gvrrd-1QV_ybX8q33XudAcE10PYt3ZDq1UDJFQ5FFX2qyD3bPNnApz32BWXZW7-q9AcBTEn-WVVoOcKZqZY_D8-REnxCHJE52Y6CtC8DqE_Tzq_uYs9SC6pLRA28LnMYX8f-FW9QFDDXyAstkMxhFnQqdNsMbiDU4TeVqN-cA6c9X2jt1C3Gzc2iOrICgAr4E05IeuMQoybxOuaC03M7aCBEM34Fr1bBRaNgA_vS4K1ESiGGW1iXp41f7UNN2WERz8DRTnBWfsuQMP3tw-W37SQudunVQZKwkOyqRGc6k0vkdWGGwL9tHbhs2lA0s13C8MSllnU-SvVVkum9g
 [192.168.31.24] out: 
 
+
+Done.
+Disconnecting from 192.168.31.24... done.
+[192.168.31.24] Executing task 'finish'
 [192.168.31.24] run: kubectl get svc --all-namespaces
-[192.168.31.24] out: NAMESPACE     NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)         AGE
-[192.168.31.24] out: default       kubernetes             ClusterIP   10.96.0.1        <none>        443/TCP         45s
-[192.168.31.24] out: kube-system   calico-etcd            ClusterIP   10.96.232.136    <none>        6666/TCP        7s
-[192.168.31.24] out: kube-system   kube-dns               ClusterIP   10.96.0.10       <none>        53/UDP,53/TCP   13s
-[192.168.31.24] out: kube-system   kubernetes-dashboard   NodePort    10.103.140.222   <none>        443:30129/TCP   1s
+[192.168.31.24] out: NAMESPACE       NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+[192.168.31.24] out: default         kubernetes              ClusterIP   10.96.0.1        <none>        443/TCP                      34m
+[192.168.31.24] out: ingress-nginx   ingress-nginx           NodePort    10.106.217.213   <none>        80:31509/TCP,443:31647/TCP   31m
+[192.168.31.24] out: kube-system     calico-etcd             ClusterIP   10.96.232.136    <none>        6666/TCP                     34m
+[192.168.31.24] out: kube-system     elasticsearch-logging   ClusterIP   10.96.31.87      <none>        9200/TCP                     29m
+[192.168.31.24] out: kube-system     kibana-logging          ClusterIP   10.98.228.167    <none>        5601/TCP                     29m
+[192.168.31.24] out: kube-system     kube-dns                ClusterIP   10.96.0.10       <none>        53/UDP,53/TCP                34m
+[192.168.31.24] out: kube-system     kubelet                 ClusterIP   None             <none>        10250/TCP                    27m
+[192.168.31.24] out: kube-system     kubernetes-dashboard    NodePort    10.110.30.173    <none>        443:31231/TCP                33m
+[192.168.31.24] out: kube-system     tiller-deploy           ClusterIP   10.99.103.114    <none>        44134/TCP                    31m
+[192.168.31.24] out: monitoring      alertmanager-main       ClusterIP   10.104.92.22     <none>        9093/TCP                     30m
+[192.168.31.24] out: monitoring      alertmanager-operated   ClusterIP   None             <none>        9093/TCP,6783/TCP            30m
+[192.168.31.24] out: monitoring      grafana                 ClusterIP   10.108.227.205   <none>        3000/TCP                     30m
+[192.168.31.24] out: monitoring      kube-state-metrics      ClusterIP   None             <none>        8443/TCP,9443/TCP            30m
+[192.168.31.24] out: monitoring      node-exporter           ClusterIP   None             <none>        9100/TCP                     30m
+[192.168.31.24] out: monitoring      prometheus-k8s          ClusterIP   10.110.209.127   <none>        9090/TCP                     29m
+[192.168.31.24] out: monitoring      prometheus-operated     ClusterIP   None             <none>        9090/TCP                     30m
+[192.168.31.24] out: monitoring      prometheus-operator     ClusterIP   None             <none>        8080/TCP                     31m
+[192.168.31.24] out: 
+
+[192.168.31.24] run: kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+[192.168.31.24] out: Name:         admin-user-token-x2q6m
+[192.168.31.24] out: Namespace:    kube-system
+[192.168.31.24] out: Labels:       <none>
+[192.168.31.24] out: Annotations:  kubernetes.io/service-account.name: admin-user
+[192.168.31.24] out:               kubernetes.io/service-account.uid: e20d35ab-db3e-11e8-86c5-525400d0af9e
+[192.168.31.24] out: 
+[192.168.31.24] out: Type:  kubernetes.io/service-account-token
+[192.168.31.24] out: 
+[192.168.31.24] out: Data
+[192.168.31.24] out: ====
+[192.168.31.24] out: token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXgycTZtIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJlMjBkMzVhYi1kYjNlLTExZTgtODZjNS01MjU0MDBkMGFmOWUiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.Ef1Y_gvrrd-1QV_ybX8q33XudAcE10PYt3ZDq1UDJFQ5FFX2qyD3bPNnApz32BWXZW7-q9AcBTEn-WVVoOcKZqZY_D8-REnxCHJE52Y6CtC8DqE_Tzq_uYs9SC6pLRA28LnMYX8f-FW9QFDDXyAstkMxhFnQqdNsMbiDU4TeVqN-cA6c9X2jt1C3Gzc2iOrICgAr4E05IeuMQoybxOuaC03M7aCBEM34Fr1bBRaNgA_vS4K1ESiGGW1iXp41f7UNN2WERz8DRTnBWfsuQMP3tw-W37SQudunVQZKwkOyqRGc6k0vkdWGGwL9tHbhs2lA0s13C8MSllnU-SvVVkum9g
+[192.168.31.24] out: ca.crt:     1025 bytes
+[192.168.31.24] out: namespace:  11 bytes
 [192.168.31.24] out: 
 
 

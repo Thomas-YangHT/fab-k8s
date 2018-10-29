@@ -5,7 +5,8 @@ def test():
         run("ls")
 
 def prepare():
-   # remote_dir_tar='/home/core/coreos-k8s.tgz'
+    run('export PATH=$PATH:/opt/bin')
+    run('sudo kubeadm reset -f ')
     put('coreos-k8s.tgz', '')
     run('tar zxvf coreos-k8s.tgz')
     run('ls coreos-k8s')
@@ -23,7 +24,7 @@ def prepare():
 
 def master():
     run('export PATH=$PATH:/opt/bin')
-    run('sudo kubeadm reset -f ')
+  #  run('sudo kubeadm reset -f ')
     run('sudo kubeadm init --kubernetes-version=v1.12.1 --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=0.0.0.0')
     run('mkdir -p $HOME/.kube')
     run('sudo cp  /etc/kubernetes/admin.conf $HOME/.kube/config')
@@ -43,15 +44,18 @@ def dashboard():
     run('kubectl apply -f  coreos-k8s/dashboard-adminuser.yaml')
     run('kubectl apply -f  coreos-k8s/dashboard-rolebonding.yaml')
     run('kubectl taint nodes --all node-role.kubernetes.io/master- ;ls')
-    run('kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk \'{print $1}\')')
-    run('kubectl get svc --all-namespaces')
+  #  run('kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk \'{print $1}\')')
+  #  run('kubectl get svc --all-namespaces')
 
 def node():
     put('join.sh','')
     run('sudo chmod +x ./join.sh')
-    run('sudo kubeadm reset -f')
+   # run('sudo kubeadm reset -f')
     run('sudo modprobe ip_vs')
     run('./join.sh')
+
+def rejoin():
+    run('kubeadm token create --print-join-command')
 
 def addon():
     put('k8s-addon.tgz', '')
@@ -79,4 +83,16 @@ def prometheus():
     run('kubectl apply -f  k8s-addon/prometheus/')
 
 def efk():
+    run('L=`cat k8s-addon/efk/kibana-deployment.yaml |grep -n SERVER_BASEPATH|awk -F\':\' \'{print $1+1}\'` &&  \
+sed  -i "$L s/.*/#\\0/" k8s-addon/efk/kibana-deployment.yaml ')
+  #Because fluentd's pod cost plenty of system performance, 
+  #pods of fluentd not running by default,
+  #you can uncomment follow two lines  '#' to run pods of fluentd or set nodeSelector  manually.
+  #  run('L=`cat k8s-addon/efk/fluentd-es-ds.yaml |grep -n nodeSelector|awk -F\':\' \'{print $1+1}\'` && \
+  #  sed  -i "$L s/.*/#\\0/" k8s-addon/efk/fluentd-es-ds.yaml')
     run('kubectl apply -f  k8s-addon/efk/')
+    run('kubectl set image  daemonset fluentd-es-v2.2.1  fluentd-es=k8s.gcr.io/fluentd-elasticsearch:v2.2.1 -n kube-system')
+
+def finish():
+    run('kubectl get svc --all-namespaces')
+    run('kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk \'{print $1}\')')
