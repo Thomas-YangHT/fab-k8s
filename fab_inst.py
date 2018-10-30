@@ -5,10 +5,11 @@ def test():
         run("ls")
 
 def prepare():
-    run('export PATH=$PATH:/opt/bin')
-    run('sudo kubeadm reset -f ')
+  #  run('export PATH=$PATH:/opt/bin')
+  #  run('sudo kubeadm reset -f ')
     put('coreos-k8s.tgz', '')
     run('tar zxvf coreos-k8s.tgz')
+    run('rm coreos-k8s.tgz')
     run('ls coreos-k8s')
     run('ls coreos-k8s/*tar |awk \'{print "docker load <"$1}\'|sh')
     run('docker images')
@@ -24,7 +25,7 @@ def prepare():
 
 def master():
     run('export PATH=$PATH:/opt/bin')
-  #  run('sudo kubeadm reset -f ')
+    run('sudo kubeadm reset -f ')
     run('sudo kubeadm init --kubernetes-version=v1.12.1 --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=0.0.0.0')
     run('mkdir -p $HOME/.kube')
     run('sudo cp  /etc/kubernetes/admin.conf $HOME/.kube/config')
@@ -50,7 +51,7 @@ def dashboard():
 def node():
     put('join.sh','')
     run('sudo chmod +x ./join.sh')
-   # run('sudo kubeadm reset -f')
+    run('sudo kubeadm reset -f')
     run('sudo modprobe ip_vs')
     run('./join.sh')
 
@@ -60,6 +61,7 @@ def rejoin():
 def addon():
     put('k8s-addon.tgz', '')
     run('tar zxvf k8s-addon.tgz')
+    run('rm k8s-addon.tgz')
     run('ls k8s-addon/*tar |awk \'{print "docker load <"$1}\'|sh')
     
 def ingress():
@@ -96,3 +98,25 @@ sed  -i "$L s/.*/#\\0/" k8s-addon/efk/kibana-deployment.yaml ')
 def finish():
     run('kubectl get svc --all-namespaces')
     run('kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk \'{print $1}\')')
+
+def istio_prepare():
+    put('istio.tgz', '')
+    run('tar zxvf istio.tgz')
+    run('rm istio.tgz')
+    run('ls istio/*tar |awk \'{print "docker load <"$1}\'|sh')
+
+def istio():
+    run('cp istio/istioctl /opt/bin/')
+    run('kubectl apply -f istio/install/kubernetes/helm/istio/templates/crds.yaml')
+    run('helm template istio/install/kubernetes/helm/istio --name istio --namespace istio-system \
+--set sidecarInjectorWebhook.enabled=true \
+--set ingress.service.type=NodePort \
+--set gateways.istio-ingressgateway.type=NodePort \
+--set gateways.istio-egressgateway.type=NodePort \
+--set tracing.enabled=true \
+--set servicegraph.enabled=true \
+--set prometheus.enabled=true \
+--set tracing.jaeger.enabled=true \
+--set grafana.enabled=true > istio.yaml')
+    run('kubectl create namespace istio-system;ls')
+    run('kubectl create -f istio.yaml;pwd')

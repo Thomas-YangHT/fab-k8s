@@ -9,14 +9,21 @@
 #                                                             
 #
 
-#prepare
-func_prepare(){
+#base prepare
+func_base_prepare(){
 	fab -H $master,$node -f fab_inst.py prepare -u core -P --colorize-errors
 }
+
 #addon prepare
 func_addon_prepare(){
 ( [ $ingress = true ] || [ $helm = true ] || [ $prometheus = true ] || [ $efk = true ] ) && \
 fab -H $master,$node -f fab_inst.py addon -u core -P --colorize-errors 
+}
+
+#istio prepare
+func_istio_prepare(){
+[ $istio = true ] && \
+fab -H $master,$node -f fab_inst.py istio_prepare -u core -P --colorize-errors 
 }
 
 #master
@@ -56,21 +63,31 @@ func_ingress(){
 [ $ingress = true ] && echo "install ingress" && \
 fab -H $master -f fab_inst.py ingress -u core --colorize-errors 
 }
+
 #helm
 func_helm(){
 [ $helm = true ] && echo "install helm" && \
 fab -H $master -f fab_inst.py helm -u core --colorize-errors
 }
+
 #prometheus
 func_prometheus(){
 [ $prometheus = true ] && echo "install prometheus" && \
 fab -H $master -f fab_inst.py prometheus -u core --colorize-errors
 }
+
 #efk
 func_efk(){
 [ $efk = true ] && echo "install efk" && \
 fab -H $master -f fab_inst.py efk -u core --colorize-errors
 }
+
+#istio
+func_istio(){
+[ $istio = true ] && echo "install istio" && \
+fab -H $master -f fab_inst.py istio -u core --colorize-errors
+}
+
 #finish 
 func_finish(){
 	fab -H $master -f fab_inst.py finish -u core --colorize-errors |tee -a log
@@ -89,7 +106,7 @@ source ./CONFIG
 case $1 in
 1|base)
   echo "start only base install..."
-  func_prepare
+#  func_base_prepare
   func_master
   func_network
   func_nodejoin
@@ -98,20 +115,30 @@ case $1 in
 ;;
 2|addon)
   echo "start addon install..."
-  func_addon_prepare
+#  func_addon_prepare
   func_helm
   func_ingress
   func_prometheus
   func_efk
   func_finish   
 ;;
-prepare)
-  echo "start prepare..."
-  func_prepare
+p|prepare)
+  echo "start prepare all..."
+  func_base_prepare
+  func_addon_prepare
+  func_istio_prepare
 ;;
-addprepare)
+p1|baseprepare)
+  echo "start prepare..."
+  func_base_prepare
+;;
+p2|addprepare)
   echo "start addprepare..."
   func_addon_prepare
+;;
+p3|istioprepare)
+  echo "start istio prepare..."
+  func_istio_prepare
 ;;
 dashboard)
   echo "start dashboard..."
@@ -130,32 +157,50 @@ rejoin)
   func_noderejoin
 ;;
 ingress)
-  echo "start mysql"
+  echo "start ingress"
   func_ingress
 ;;
 helm)
-  echo "start mysql"
+  echo "start helm"
   func_helm
 ;;
 prometheus)
-  echo "start mysql"
+  echo "start prometheus"
   func_prometheus
 ;;
 efk)
-  echo "start mysql"
+  echo "start efk"
   func_efk
+;;
+istio)
+  echo "start istio"
+  func_istio
 ;;
 finish)
   echo "services message:"
   func_finish
 ;;
-help)
-  echo "usage: $0 1|2|base|addon|prepare|dashboard|network|node|rejoin|ingress|helm|prometheus|efk|finish"
+help|*)
+  echo "usage: $0 [prepare|p]|p1|p2|p3|[1|base]|[2|addon]|dashboard|network|node|rejoin|ingress|helm|prometheus|efk|istio|finish|default|help"
+  echo -e "\
+        prepare|p      :cp&load all tgz&images.\n\
+        p1             :cp&load base tgz&image only.\n\
+        p2             :cp&load addon tgz&image only.\n\
+        p3             :cp&load istio tgz&image only,join node.\n\
+        1|base         :install k8s base component&calico&dashboard.\n\
+        2|addon        :install k8s addon component:helm,ingress,efk,prometheus.\n\
+        node           :only join node.\n\
+        rejoin         :need join other node after 24h.\n\
+        istio          :install istio component.\n\
+        default        :install all configured in CONFIG file.\n\
+        finish         :when need check login token or service status.\n\
+  "
 ;;
-*)
+default|all)
   echo "start all install..."
-  func_prepare
+  func_base_prepare
   func_addon_prepare
+  func_istio_prepare
   func_master
   func_network
   func_nodejoin
@@ -164,6 +209,7 @@ help)
   func_ingress
   func_prometheus
   func_efk
+  func_istio
   func_finish
 ;;
 esac
