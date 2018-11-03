@@ -15,7 +15,7 @@ def prepare():
     run('docker images')
     run('sudo mkdir -p /opt/{bin,cni/bin}')
     run('sudo tar -C /opt/cni/bin -xzvf coreos-k8s/cni-plugins-amd64-v0.6.0.tgz')
-    run('sudo cp /home/core/coreos-k8s/{kubeadm,kubelet,kubectl} /opt/')
+    run('sudo cp /home/core/coreos-k8s/{kubeadm,kubelet,kubectl} /opt/bin')
     run('sudo chmod +x /opt/bin/{kubeadm,kubelet,kubectl}')
     run('ls -l /opt/*')
     run('sudo mkdir -p /etc/systemd/system/kubelet.service.d')
